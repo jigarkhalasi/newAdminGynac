@@ -1,0 +1,111 @@
+﻿@model Sculptor.Gynac.Models.UserImageForReviewModel
+    @{
+        ViewBag.Title = "GetAllReviewImages";
+        Layout = "~/Views/Shared/_Layout.cshtml";        
+    }
+
+    <!--banner-->
+    <div class="banner">
+        <h2>
+            <a href="/Home/Index">Home</a>
+            <i class="fa fa-angle-right"></i>
+            <span>Faculty</span>
+        </h2>
+    </div>
+    <!--//banner-->
+    <!--faq-->
+    <div class="blank">
+        <div class="blank-page">
+            <ul id="moduleName">
+                <li>
+                    <h5>@Model.ModuleName</h5>
+                <hr />
+                <ul id="moduleImageSample">
+                    <li>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h3>@Model.Description</h3>
+                                <br />
+                                <img src="@Model.SampleImagePath" height="100px;" width="100px;" />
+                            </div>
+                            <div class="col-md-6">                               
+                                    <div class="row" style="margin-top:50px;">
+                                        <div class="col-md-3">
+                                            <img src="@Model.UserImagePath" height="100px;" width="100px;" />
+                                        </div>
+                                        <div class="col-md-9">
+                                            @Html.TextArea("Comment", "", 3, 30, new { @id = "Comment", @title = "Comment", @placeholder = "Enter Comments here" })
+                                            <input type="hidden" value="@Model.UserModuleImageId" id="UserModuleImageId" />
+                                            <input type="hidden" value="@Model.FacultyId" id="FacultyId" />
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <input type="button" class="btn btn-sm btn-success" value="Confirm" id="confirm" name="confrim" onclick="confirm(this)" />
+                                            <input type="button" class="btn btn-sm btn-danger" value="Reject" id="reject" name="reject" onclick="reject(this)" />
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+<!--//faq-->
+<!---->
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+
+<script>
+    // $(document).ready(function () {
+
+    function confirm(val) {
+        var data = {
+            UserModuleImageId: $("#UserModuleImageId").val(),
+            FacultyId: $("#FacultyId").val(),
+            Comment: $("#Comment").val(),
+            IsStatus: 1
+        };
+
+        $.ajax({
+            type: "POST",
+            url: '/Faculty/AddReveiewImage',
+            data: data,
+            success: function (result) {
+                window.location.href = '/Faculty/GetFacultyUsers?facultyId=' + data.FacultyId;
+            },
+            error: function (error) {
+                //$("#eroor").html(error.responseText);
+            },
+            dataType: 'json'
+        });
+    }
+    function reject(val) {
+        var data = {
+            UserModuleImageId: $("#UserModuleImageId").val(),
+            FacultyId: $("#FacultyId").val(),
+            Comment: $("#Comment").val(),
+            IsStatus: 2
+        };
+
+        $.ajax({
+            type: "POST",
+            url: '/Faculty/AddReveiewImage',
+            data: data,
+            success: function (result) {
+                window.location.href = '/Faculty/GetFacultyUsers?facultyId=' + data.FacultyId;
+            },
+            error: function (error) {
+                //$("#eroor").html(error.responseText);
+            },
+            dataType: 'json'
+        });
+    }
+    //});
+</script>
+
